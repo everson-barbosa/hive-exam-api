@@ -1,0 +1,54 @@
+services:
+  api:
+    build: .
+    container_name: api
+    ports:
+       - 3000:3000
+    environment:
+       DATABASE_URL: mongodb://root:root@mongodb:27017/dev?directConnection=true
+    depends_on:
+       - mongodb
+
+  mongodb:
+    image: docker.io/bitnami/mongodb:7.0
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_ADVERTISED_HOSTNAME: mongodb
+      MONGODB_ROOT_USERNAME: root
+      MONGODB_ROOT_PASSWORD: root
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_KEY: replicasetkey123
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: root
+      MONGODB_DATABASE: dev
+    volumes:
+       - 'mongodb_data:/bitnami/mongodb'
+       #- './init-replica.sh:/docker-entrypoint-initdb.d/init-replica.sh'
+
+  mongodb-secondary:
+    image: docker.io/bitnami/mongodb:7.0
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_ADVERTISED_HOSTNAME: mongodb-secondary
+      MONGODB_REPLICA_SET_MODE: secondary
+      MONGODB_INITIAL_PRIMARY_HOST: mongodb
+      MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: root
+      MONGODB_REPLICA_SET_KEY: replicasetkey123
+
+  mongodb-arbiter:
+    image: docker.io/bitnami/mongodb:7.0
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_ADVERTISED_HOSTNAME: mongodb-arbiter
+      MONGODB_REPLICA_SET_MODE: arbiter
+      MONGODB_INITIAL_PRIMARY_HOST: mongodb
+      MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: root
+      MONGODB_REPLICA_SET_KEY: replicasetkey123
+
+volumes:
+  mongodb_data:
+    driver: local

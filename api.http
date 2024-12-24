@@ -1,0 +1,49 @@
+@baseUrl = http://localhost:3000
+@token = Bearer {{login.response.body.$.access_token}}
+
+GET {{baseUrl}}
+
+# {admin 'john' 'changeme'; user: 'maria', 'guess', andrew, 'changeme'},
+
+###
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "maria@gmail.com",
+    "password": "guess"
+}
+
+### Sign up
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "username": "andrew",
+    "password": "changeme",
+    "email": "andrew@gmail.com"
+}
+
+###
+GET {{baseUrl}}/auth/profile
+Content-Type: application/json
+Authorization: {{token}}
+
+###
+POST {{baseUrl}}/users
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+    "email": "andrew@gmail.com"
+}
+
+###
+GET {{baseUrl}}/users
+Content-Type: application/json
+Authorization: {{token}}
+
+###
+GET {{baseUrl}}/app-metrics
+Authorization: {{token}}
