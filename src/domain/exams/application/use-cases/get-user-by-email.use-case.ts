@@ -1,6 +1,6 @@
 import { Either, left, right } from 'src/core/either';
-import { ResourceNotFound } from './errors/resource-not-found.error';
-import { User } from '@/domain/enterprise/entities/user.entity';
+import { ResourceNotFoundError } from '@/core/use-cases/errors/resource-not-found.error';
+import { User } from '@/domain/exams/enterprise/entities/user.entity';
 import { UsersRepository } from '../repositories/users.repository';
 import { Injectable } from '@nestjs/common';
 
@@ -9,7 +9,7 @@ interface GetUserByEmailUseCaseRequest {
 }
 
 type GetUserByEmailUseCaseResponse = Either<
-  ResourceNotFound,
+  ResourceNotFoundError,
   {
     user: User;
   }
@@ -25,7 +25,7 @@ export class GetUserByEmailUseCase {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      return left(new ResourceNotFound());
+      return left(new ResourceNotFoundError());
     }
 
     return right({ user });

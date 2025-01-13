@@ -1,6 +1,6 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
-import { Role, User } from '@/domain/enterprise/entities/user.entity';
-import { User as PrismaUser } from '@prisma/client';
+import { Role, User } from '@/domain/exams/enterprise/entities/user.entity';
+import { User as PrismaUser, $Enums } from '@prisma/client';
 
 export class PrismaUsersMapper {
   static toPrisma(raw: User): PrismaUser {
@@ -9,7 +9,7 @@ export class PrismaUsersMapper {
       email: raw.email,
       name: raw.name,
       password: raw.password,
-      role: raw.role,
+      role: $Enums.UserRole[raw.role],
     };
   }
 

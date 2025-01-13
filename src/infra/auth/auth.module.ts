@@ -12,7 +12,7 @@ import { jwtConstants } from './constants';
       global: true,
       useFactory() {
         return {
-          signOptions: { algorithm: 'HS256', expiresIn: '1d' },
+          signOptions: { algorithm: 'HS256', expiresIn: '1h' },
           secretOrPrivateKey: jwtConstants.secret,
         };
       },

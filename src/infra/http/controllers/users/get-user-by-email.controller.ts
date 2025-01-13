@@ -1,4 +1,4 @@
-import { GetUserByEmailUseCase } from '@/domain/application/use-cases/get-user-by-email.use-case';
+import { GetUserByEmailUseCase } from '@/domain/exams/application/use-cases/get-user-by-email.use-case';
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
 import { UserPresenter } from '../../presenters/user.presenter';
 import { ApiTags } from '@nestjs/swagger';

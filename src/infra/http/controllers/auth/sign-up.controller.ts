@@ -6,9 +6,9 @@ import {
   HttpCode,
   Post,
 } from '@nestjs/common';
-import { SignUpUseCase } from '@/domain/application/use-cases/sign-up.use-case';
+import { SignUpUseCase } from '@/domain/exams/application/use-cases/sign-up.use-case';
 import { SignUpDto } from '../../dtos/auth/sign-up.dto';
-import { UserAlreadyExistsError } from '@/domain/application/use-cases/errors/user-already-exists.error';
+import { UserAlreadyExistsError } from '@/domain/exams/application/use-cases/errors/user-already-exists.error';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from '@/infra/auth/public';
 

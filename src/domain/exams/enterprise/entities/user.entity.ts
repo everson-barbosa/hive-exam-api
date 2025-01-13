@@ -8,9 +8,9 @@ export enum Role {
 
 export interface UserProps {
   email: string;
-  name: string
-  password: string
-  role: Role
+  name: string;
+  password: string;
+  role: Role;
 }
 
 export class User extends Entity<UserProps> {
@@ -19,15 +19,15 @@ export class User extends Entity<UserProps> {
   }
 
   get name() {
-    return this.props.name
+    return this.props.name;
   }
 
   get password() {
-    return this.props.password
+    return this.props.password;
   }
 
   get role() {
-    return this.props.role
+    return this.props.role;
   }
 
   static create(props: UserProps, id?: UniqueEntityID) {
@@ -35,10 +35,9 @@ export class User extends Entity<UserProps> {
       {
         ...props,
       },
-      id ?? new UniqueEntityID(),
+      id,
     );
 
     return user;
   }
 }
-

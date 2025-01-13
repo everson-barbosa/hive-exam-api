@@ -6,8 +6,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { SignInWithEmailDto } from '../../dtos/auth/sign-in-with-email.dto';
-import { SignInWithEmailUseCase } from '@/domain/application/use-cases/sign-in-with-email.use-case';
-import { WrongCredentialsError } from '@/domain/application/use-cases/errors/wrong-credentials.error';
+import { SignInWithEmailUseCase } from '@/domain/exams/application/use-cases/sign-in-with-email.use-case';
+import { WrongCredentialsError } from '@/domain/exams/application/use-cases/errors/wrong-credentials.error';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from '@/infra/auth/public';
 

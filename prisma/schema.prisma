@@ -13,15 +13,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  email    String  @unique
-  name     String?
-  password String
-  role     Role    @default(USER)
-}
-
-enum Role {
+enum UserRole {
   USER
   ADMIN
+}
+
+model User {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  email    String   @unique
+  name     String?
+  password String
+  role     UserRole @default(USER)
+
+  examTemplates ExamTemplate[]
+}
+
+model QuestionOption {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  questionId  String? @db.ObjectId
+
+  Question Question? @relation(fields: [questionId], references: [id])
+}
+
+model Question {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  enunciation    String
+  options        QuestionOption[]
+  examTemplateId String?          @db.ObjectId
+
+  ExamTemplate ExamTemplate? @relation(fields: [examTemplateId], references: [id])
+}
+
+enum ExamTemplateStatus {
+  CREATED
+  PUBLISHED
+  ARCHIVED
+}
+
+model ExamTemplate {
+  id        String             @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  questions Question[]
+  authorId  String?            @db.ObjectId
+  status    ExamTemplateStatus @default(CREATED)
+  createdAt DateTime
+  updateAt  DateTime
+
+  User User? @relation(fields: [authorId], references: [id])
 }

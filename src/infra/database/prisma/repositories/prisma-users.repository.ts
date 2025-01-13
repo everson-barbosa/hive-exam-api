@@ -1,6 +1,6 @@
-import { PaginationParams } from '@/core/repositories/Pagination';
-import { UsersRepository } from '@/domain/application/repositories/users.repository';
-import { User } from '@/domain/enterprise/entities/user.entity';
+import { Pagination } from '@/core/repositories/pagination';
+import { UsersRepository } from '@/domain/exams/application/repositories/users.repository';
+import { User } from '@/domain/exams/enterprise/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { PrismaUsersMapper } from '../mappers/prisma-users.mapper';
@@ -31,8 +31,8 @@ export class PrismaUsersRepository implements UsersRepository {
     return PrismaUsersMapper.toDomain(user);
   }
 
-  async findMany(params: PaginationParams): Promise<User[]> {
-    const { page, perPage } = params;
+  async findMany(pagination: Pagination): Promise<User[]> {
+    const { page, perPage } = pagination;
 
     const users = await this.prismaService.user.findMany({
       take: perPage,
