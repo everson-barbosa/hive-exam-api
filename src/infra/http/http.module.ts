@@ -7,14 +7,22 @@ import { SignInWithEmailUseCase } from '@/domain/exams/application/use-cases/sig
 import { CryptographyModule } from '../cryptography/cryptography.module';
 import { SignUpController } from './controllers/auth/sign-up.controller';
 import { SignUpUseCase } from '@/domain/exams/application/use-cases/sign-up.use-case';
+import { FetchExamTemplatesController } from './controllers/exam-templates/fetch-exam-templates.controller';
+import { FetchExamTemplatesUseCase } from '@/domain/exams/application/use-cases/fetch-exam-templates.use-case';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [
-    GetUserByEmailController,
     SignInWithEmailController,
     SignUpController,
+    GetUserByEmailController,
+    FetchExamTemplatesController,
   ],
-  providers: [GetUserByEmailUseCase, SignInWithEmailUseCase, SignUpUseCase],
+  providers: [
+    SignInWithEmailUseCase,
+    SignUpUseCase,
+    GetUserByEmailUseCase,
+    FetchExamTemplatesUseCase,
+  ],
 })
 export class HttpModule {}

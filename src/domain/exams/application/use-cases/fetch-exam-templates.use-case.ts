@@ -7,7 +7,7 @@ import {
 import { ExamTemplatesRepository } from '../repositories/exam-templates.repository';
 import { Order } from '@/core/types/order';
 
-interface FetchExamTemplatesRequest {
+interface FetchExamTemplatesUseCaseRequest {
   readonly page: number;
   readonly perPage: number;
   readonly order: Order;
@@ -15,14 +15,14 @@ interface FetchExamTemplatesRequest {
   readonly statuses: ExamTemplateStatus[];
 }
 
-type FetchExamTemplatesResponse = Either<
+type FetchExamTemplatesUseCaseResponse = Either<
   null,
   {
     readonly examTemplates: ExamTemplate[];
   }
 >;
 
-export class FetchExamTemplates {
+export class FetchExamTemplatesUseCase {
   constructor(private examTemplatesRepository: ExamTemplatesRepository) {}
 
   async execute({
@@ -31,7 +31,7 @@ export class FetchExamTemplates {
     order,
     orderBy,
     statuses,
-  }: FetchExamTemplatesRequest): Promise<FetchExamTemplatesResponse> {
+  }: FetchExamTemplatesUseCaseRequest): Promise<FetchExamTemplatesUseCaseResponse> {
     const examTemplates = await this.examTemplatesRepository.findMany(
       {
         page,
