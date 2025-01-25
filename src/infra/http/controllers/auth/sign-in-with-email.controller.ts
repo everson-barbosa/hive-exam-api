@@ -16,7 +16,7 @@ import { ZodValidationPipe } from '@/infra/pipes/zod-validation-pipe';
 
 const signInWithEmailBodySchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z.string(),
 });
 
 type SignInWithEmailBodySchema = z.infer<typeof signInWithEmailBodySchema>;
