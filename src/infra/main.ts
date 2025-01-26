@@ -3,8 +3,7 @@ import { AppModule } from './app.module';
 import helmet from 'helmet';
 import { Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ConfigService } from '@nestjs/config';
-import { EnvSchema } from './env';
+import { EnvService } from './env/env.service';
 
 async function bootstrap() {
   const logger = new Logger();
@@ -20,8 +19,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 
-  const configService = app.get<ConfigService<EnvSchema, true>>(ConfigService);
-  const port = configService.get('PORT', { infer: true });
+  const envService = app.get(EnvService);
+  const port = envService.get('PORT');
 
   await app.listen(port, () => {
     logger.log(`Server is running on PORT ${port}`, 'NestApplication');

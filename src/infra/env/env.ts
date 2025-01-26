@@ -7,4 +7,4 @@ export const envSchema = z.object({
   PORT: z.coerce.number().optional().default(3333),
 });
 
-export type EnvSchema = z.infer<typeof envSchema>;
+export type Env = z.infer<typeof envSchema>;
