@@ -9,16 +9,61 @@ import {
 import { Ordernation } from '@/core/repositories/ordernation';
 import { Pagination } from '@/core/repositories/pagination';
 import { PrismaExamTemplatesMapper } from '../mappers/prisma-exam-templates.mapper';
-import { $Enums } from '@prisma/client';
+import {
+  ExamTemplateWithRelationsQuery,
+  ExamTemplateWithRelations,
+} from '@/domain/exams/enterprise/relations/exam-template.relations';
+// import { $Enums } from '@prisma/client';
 
 @Injectable()
 export class PrismaExamTemplatesRepository implements ExamTemplatesRepository {
   constructor(private prismaService: PrismaService) {}
 
+  async findById(id: string): Promise<ExamTemplate | null> {
+    const data = await this.prismaService.examTemplate.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!data) return null;
+
+    return PrismaExamTemplatesMapper.toDomain(data);
+  }
+
+  async findWithRelationsById(
+    id: string,
+    query: ExamTemplateWithRelationsQuery,
+  ): Promise<Partial<ExamTemplateWithRelations> | null> {
+    const { fields, include } = query;
+
+    const data = await this.prismaService.examTemplate.findUnique({
+      where: {
+        id,
+      },
+      include: {},
+    });
+
+    if (!data) return null;
+  }
+
   async create(examTemplate: ExamTemplate): Promise<void> {
     const data = PrismaExamTemplatesMapper.toPrisma(examTemplate);
 
-    await this.prismaService.examTemplate.create({ data });
+    await this.prismaService.examTemplate.create({
+      data,
+    });
+  }
+
+  async save(examTemplate: ExamTemplate): Promise<void> {
+    const data = PrismaExamTemplatesMapper.toPrisma(examTemplate);
+
+    await this.prismaService.examTemplate.update({
+      data,
+      where: {
+        id: data.id,
+      },
+    });
   }
 
   async findMany(
@@ -26,19 +71,17 @@ export class PrismaExamTemplatesRepository implements ExamTemplatesRepository {
     ordernation: Ordernation<ExamTemplateOrdernationProps>,
     statuses?: ExamTemplateStatus[],
   ): Promise<ExamTemplate[]> {
+    console.log(statuses);
+
     const data = await this.prismaService.examTemplate.findMany({
       take: pagination.perPage,
       skip: (pagination.page - 1) * pagination.perPage,
       orderBy: {
         [ordernation.orderBy]: ordernation.order,
       },
-      where: statuses
-        ? {
-            status: {
-              in: statuses.map((status) => $Enums.ExamTemplateStatus[status]),
-            },
-          }
-        : undefined,
+      include: {
+        questions: true,
+      },
     });
 
     return data.map(PrismaExamTemplatesMapper.toDomain);

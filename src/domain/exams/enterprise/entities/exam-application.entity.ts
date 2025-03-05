@@ -49,10 +49,4 @@ export class ExamApplication extends AggregateRoot<ExamApplicationProps> {
 
     return examApplication;
   }
-
-  addParticipant(participant) {
-    this.props.participants.add(participant);
-
-    this.addDomainEvent(new OnAddParticipantToExamApplicationEvent(this));
-  }
 }

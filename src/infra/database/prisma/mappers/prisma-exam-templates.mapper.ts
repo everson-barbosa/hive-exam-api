@@ -4,7 +4,12 @@ import {
   ExamTemplate,
   ExamTemplateStatus,
 } from '@/domain/exams/enterprise/entities/exam-template.entity';
-import { ExamTemplate as PrismaExamTemplate, $Enums } from '@prisma/client';
+import { ExamTemplateWithRelationsQuery } from '@/domain/exams/enterprise/relations/exam-template.relations';
+import {
+  ExamTemplate as PrismaExamTemplate,
+  $Enums,
+  Prisma,
+} from '@prisma/client';
 
 export class PrismaExamTemplatesMapper {
   static toPrisma(raw: ExamTemplate): PrismaExamTemplate {
@@ -13,7 +18,7 @@ export class PrismaExamTemplatesMapper {
       authorId: raw.authorId.toString(),
       title: raw.title,
       createdAt: raw.createdAt,
-      updateAt: raw.updatedAt,
+      updatedAt: raw.updatedAt,
       status: $Enums.ExamTemplateStatus[raw.status],
     };
   }
@@ -24,11 +29,17 @@ export class PrismaExamTemplatesMapper {
         authorId: new UniqueEntityID(raw.authorId),
         title: raw.title,
         createdAt: raw.createdAt,
-        updatedAt: raw.updateAt,
+        updatedAt: raw.updatedAt,
         status: ExamTemplateStatus[raw.status],
         questions: new ExamTemplateQuestionList([]),
       },
       new UniqueEntityID(raw.id),
     );
+  }
+
+  static toQuerySelect(
+    raw?: ExamTemplateWithRelationsQuery,
+  ): Prisma.ExamTemplateSelect {
+    return {};
   }
 }

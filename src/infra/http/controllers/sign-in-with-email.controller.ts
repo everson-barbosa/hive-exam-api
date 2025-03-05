@@ -12,7 +12,7 @@ import { WrongCredentialsError } from '@/domain/exams/application/use-cases/erro
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from '@/infra/auth/public';
 import { z } from 'zod';
-import { ZodValidationPipe } from '@/infra/pipes/zod-validation-pipe';
+import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe';
 
 const signInWithEmailBodySchema = z.object({
   email: z.string().email(),
@@ -23,7 +23,7 @@ type SignInWithEmailBodySchema = z.infer<typeof signInWithEmailBodySchema>;
 
 @ApiTags('auth')
 @Public()
-@Controller('/sign-in:with-email')
+@Controller('/sign-in/with-email')
 export class SignInWithEmailController {
   constructor(private signInWithEmailUseCase: SignInWithEmailUseCase) {}
 

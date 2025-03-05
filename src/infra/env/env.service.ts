@@ -7,6 +7,6 @@ export class EnvService {
   constructor(private configService: ConfigService) {}
 
   get<T extends keyof Env>(key: T) {
-    return this.configService.get<T>(key);
+    return this.configService.get(key);
   }
 }

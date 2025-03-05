@@ -6,6 +6,10 @@ interface SubjectProps {
 }
 
 export class Subject extends Entity<SubjectProps> {
+  get title() {
+    return this.props.title;
+  }
+
   static create(props: SubjectProps, id?: UniqueEntityID) {
     const subject = new Subject(
       {

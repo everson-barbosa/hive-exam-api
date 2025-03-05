@@ -6,6 +6,7 @@ import {
 } from '@/domain/exams/enterprise/entities/exam-template.entity';
 import { ExamTemplatesRepository } from '../repositories/exam-templates.repository';
 import { Order } from '@/core/types/order';
+import { Injectable } from '@nestjs/common';
 
 interface FetchExamTemplatesUseCaseRequest {
   readonly page: number;
@@ -22,6 +23,7 @@ type FetchExamTemplatesUseCaseResponse = Either<
   }
 >;
 
+@Injectable()
 export class FetchExamTemplatesUseCase {
   constructor(private examTemplatesRepository: ExamTemplatesRepository) {}
 

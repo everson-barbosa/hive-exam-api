@@ -12,7 +12,7 @@ import { UserAlreadyExistsError } from '@/domain/exams/application/use-cases/err
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from '@/infra/auth/public';
 import { z } from 'zod';
-import { ZodValidationPipe } from '@/infra/pipes/zod-validation-pipe';
+import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe';
 
 const signUpBodySchema = z.object({
   name: z.string(),

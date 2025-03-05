@@ -7,6 +7,7 @@ import { ExamTemplatesRepository } from '../repositories/exam-templates.reposito
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { ExamTemplateQuestion } from '@/domain/exams/enterprise/entities/exam-template-question.entity';
 import { ExamTemplateQuestionList } from '@/domain/exams/enterprise/entities/exam-template-question.watched-list';
+import { Injectable } from '@nestjs/common';
 
 interface CreateExamTemplateUseCaseRequest {
   readonly title: string;
@@ -21,6 +22,7 @@ type CreateExamTemplateUseCaseResponse = Either<
   }
 >;
 
+@Injectable()
 export class CreateExamTemplateUseCase {
   constructor(private examTemplatesRepository: ExamTemplatesRepository) {}
 

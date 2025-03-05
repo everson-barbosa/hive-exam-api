@@ -26,26 +26,35 @@ model User {
   role     UserRole @default(USER)
 
   examTemplates ExamTemplate[]
+  question      Question[]
 }
 
 model QuestionOption {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
   description String
-  questionId  String? @db.ObjectId
-
-  Question Question? @relation(fields: [questionId], references: [id])
 }
 
 model Question {
-  id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  enunciation    String
-  options        QuestionOption[]
-  examTemplateId String?          @db.ObjectId
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  authorId    String @map("author_id") @db.ObjectId
+  enunciation String
 
-  ExamTemplate ExamTemplate? @relation(fields: [examTemplateId], references: [id])
+  author       User                   @relation(fields: [authorId], references: [id])
+  attachment   QuestionAttachment[]
+  examTemplate ExamTemplateQuestion[]
+}
+
+model ExamTemplateQuestion {
+  id             String @id @map("_id") @db.ObjectId
+  questionId     String @map("question_id") @db.ObjectId
+  examTemplateId String @map("exam_template_id") @db.ObjectId
+
+  question     Question     @relation(fields: [questionId], references: [id])
+  examTemplate ExamTemplate @relation(fields: [examTemplateId], references: [id])
 }
 
 enum ExamTemplateStatus {
+  SKETCHED
   CREATED
   PUBLISHED
   ARCHIVED
@@ -54,11 +63,28 @@ enum ExamTemplateStatus {
 model ExamTemplate {
   id        String             @id @default(auto()) @map("_id") @db.ObjectId
   title     String
-  questions Question[]
-  authorId  String?            @db.ObjectId
+  authorId  String?            @map("author_id") @db.ObjectId
   status    ExamTemplateStatus @default(CREATED)
-  createdAt DateTime
-  updateAt  DateTime
+  createdAt DateTime           @map("created_at")
+  updatedAt DateTime           @map("updated_at")
 
-  User User? @relation(fields: [authorId], references: [id])
+  author    User?                  @relation(fields: [authorId], references: [id])
+  questions ExamTemplateQuestion[]
+}
+
+model QuestionAttachment {
+  id           String @id @map("_id")
+  questionId   String @map("question_id") @db.ObjectId
+  attachmentId String @map("attachment_id")
+
+  attachment Attachment @relation(fields: [attachmentId], references: [id])
+  question   Question   @relation(fields: [questionId], references: [id])
+}
+
+model Attachment {
+  id    String @id @map("_id")
+  title String
+  url   String
+
+  questionAttachment QuestionAttachment[]
 }

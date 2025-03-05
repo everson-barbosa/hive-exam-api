@@ -9,6 +9,7 @@ export type ExamTemplateOrdernationProps = keyof Pick<
 >;
 
 export enum ExamTemplateStatus {
+  SKETCHED,
   CREATED,
   PUBLISHED,
   ARCHIVED,
